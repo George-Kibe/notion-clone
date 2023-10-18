@@ -1,14 +1,11 @@
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-// flex min-h-screen flex-col items-center justify-between p-24
+import Heading from "./_components/Heading";
 
-
-export default function Home() {
+export default function MarketingPage() {
   return (
-    <div className="">
-     <Button variant={"emerald"}>
-        Delete
-     </Button>
+    <div className="min-h-full flex flex-col">
+      <div className="flex flex-col items-center justify-center md:justify-start text-center gap-y-8 flex-1 px-6 pb-10">
+        <Heading />
+      </div>
     </div>
-  )
+  );
 }
