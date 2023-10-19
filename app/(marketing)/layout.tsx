@@ -4,7 +4,7 @@ import { Poppins } from "next/font/google";
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
-  title: "Notion Clone dbdb",
+  title: "Notion Clone",
   description: "Notion Clone Using Nextjs", 
 };
 

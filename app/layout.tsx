@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ConvexClientProvider } from "@/components/providers/convex-provider";
 
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
@@ -33,16 +34,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.className} p-8`}>
-        <ThemeProvider 
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          storageKey="real-notion-theme"
-        >
-          {children}
-        </ThemeProvider>        
+      <body className={`${poppins.className} p-8 md:mt-20`}>
+        <ConvexClientProvider>
+          <ThemeProvider 
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="real-notion-theme"
+          >
+            {children}
+          </ThemeProvider>  
+        </ConvexClientProvider>      
       </body>
     </html>
   );
