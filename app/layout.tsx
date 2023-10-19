@@ -34,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.className} p-8 md:mt-20`}>
+      <body className={`${poppins.className} p-8 `}>
         <ConvexClientProvider>
           <ThemeProvider 
             attribute="class"
