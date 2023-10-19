@@ -4,7 +4,7 @@ import { Poppins } from "next/font/google";
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
-  title: "Notion Clone",
+  title: "Notion Clone dbdb",
   description: "Notion Clone Using Nextjs", 
 };
 
@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} p-16 py-24`}>
+      <body className={`${poppins.className} p-16 mt-10`}>
         {children}
       </body>
     </html>

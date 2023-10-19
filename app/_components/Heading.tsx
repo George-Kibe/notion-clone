@@ -18,7 +18,7 @@ const Heading = () => {
       </h3>
       <Button asChild>
           <Link href="/documents">
-            Enter Jotion
+            Enter RealNotion
             <ArrowRight className="h-4 w-4 ml-2" />
           </Link>
         </Button>
