@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
@@ -31,9 +32,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className} p-8`}>
-        {children}
+        <ThemeProvider 
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="real-notion-theme"
+        >
+          {children}
+        </ThemeProvider>        
       </body>
     </html>
   );

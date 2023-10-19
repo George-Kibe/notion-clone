@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} p-8`}>
+      <body className={`${poppins.className} p-16 py-24`}>
         {children}
       </body>
     </html>
