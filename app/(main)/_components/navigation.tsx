@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { useMutation } from 'convex/react'
 import { ChevronsLeft, MenuIcon } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
-import React, { ElementRef, useRef, useState } from 'react'
+import React, { ElementRef, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import Navbar from './navbar'
 
@@ -26,6 +26,20 @@ const Navigation = () => {
   const [isResetting, setIsResetting] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
 
+  useEffect(() => {
+    if (isMobile) {
+      collapse();
+    } else {
+      resetWidth();
+    }
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse();
+    }
+  }, [pathname, isMobile]);
+
   const handleMouseDown = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
@@ -41,8 +55,8 @@ const Navigation = () => {
     if (!isResizingRef.current) return;
     let newWidth = event.clientX;
 
-    if (newWidth < 240) newWidth = 240;
-    if (newWidth > 480) newWidth = 480;
+    if (newWidth < 200) newWidth = 200;
+    if (newWidth > 400) newWidth = 400;
 
     if (sidebarRef.current && navbarRef.current) {
       sidebarRef.current.style.width = `${newWidth}px`;
@@ -92,7 +106,7 @@ const Navigation = () => {
       <aside 
         ref={sidebarRef}
         className={cn(
-          "group/sidebar min-h-screen bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999]",
+          "group/sidebar h-full bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999]",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "w-0"
         )}
@@ -119,7 +133,6 @@ const Navigation = () => {
           className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute
           h-full w-1 bg-primary/10 right-0 top-0"
         >
-
         </div>
       </aside>
       <div
