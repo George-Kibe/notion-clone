@@ -1,16 +1,16 @@
 "use client"
 
 import { cn } from '@/lib/utils'
-import { useMutation } from 'convex/react'
-import { ChevronsLeft, MenuIcon } from 'lucide-react'
+import { useMutation, useQuery } from 'convex/react'
+import { ChevronsLeft, MenuIcon, PlusCircle } from 'lucide-react'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { ElementRef, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import Navbar from './navbar'
 import UserItem from './useritem'
-
-// continue from
-// run npm run dev and npx convex dev
+import { api } from '@/convex/_generated/api'
+import Item  from './item'
+import { toast } from 'sonner'
 
 const Navigation = () => {
   const router = useRouter();
@@ -19,7 +19,8 @@ const Navigation = () => {
   const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  // const create = useMutation(api.documents.create);
+  const documents = useQuery(api.documents.get)
+  const create = useMutation(api.documents.create);
 
   const isResizingRef = useRef(false);
   const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -101,6 +102,16 @@ const Navigation = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   }
+  const handleCreate = async() => {
+    const promise = create({ title: "New Main Test" })
+    //.then((documentId) => router.push(`/documentss/${documentId}`))
+
+  toast.promise(promise, {
+    loading: "Creating a new note...",
+    success: "New note created!",
+    error: "Failed to create a new note."
+  });
+  }
 
   return (
     <>
@@ -124,9 +135,15 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
+          <Item onClick={handleCreate} label='New Page' icon={PlusCircle}/>
         </div>
         <div className="mt-4">
-          <p className="px-4">Documents</p>
+          {
+            documents?.map((document) => (
+              <p key={document._id} className="px-4">{document.title}</p>
+            ))
+          }
+          
         </div>
         <div 
           onMouseDown={handleMouseDown}

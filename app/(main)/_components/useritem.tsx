@@ -7,6 +7,7 @@ import {
   Avatar,
   AvatarImage
 } from "@/components/ui/avatar";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +19,6 @@ import {
 
 const UserItem = () => {
   const { user } = useUser();
-  console.log("User: ", user)
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

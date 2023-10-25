@@ -44,7 +44,7 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="real-notion-theme"
           >
-            <Toaster position="top-right" toastOptions={{ duration: 5000 }}/>
+            <Toaster position="bottom-center" toastOptions={{ duration: 5000 }}/>
             {children}
           </ThemeProvider>  
         </ConvexClientProvider>      
