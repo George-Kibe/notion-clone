@@ -7,8 +7,9 @@ import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { ElementRef, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import Navbar from './navbar'
+import UserItem from './useritem'
 
-// continue from 1:50:54
+// continue from
 // run npm run dev and npx convex dev
 
 const Navigation = () => {
@@ -122,10 +123,10 @@ const Navigation = () => {
           <ChevronsLeft className="h-6 w-6" />
         </div>
         <div>
-          <p>Action Items</p>
+          <UserItem />
         </div>
         <div className="mt-4">
-          <p className="">Documents</p>
+          <p className="px-4">Documents</p>
         </div>
         <div 
           onMouseDown={handleMouseDown}

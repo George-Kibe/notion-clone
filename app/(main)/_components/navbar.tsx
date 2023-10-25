@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Navbar = () => {
+const Navbar = ({isCollapsed}) => {
   return (
     <div>
       Navbar

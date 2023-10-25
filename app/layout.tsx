@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
@@ -43,6 +44,7 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="real-notion-theme"
           >
+            <Toaster position="top-right" toastOptions={{ duration: 5000 }}/>
             {children}
           </ThemeProvider>  
         </ConvexClientProvider>      

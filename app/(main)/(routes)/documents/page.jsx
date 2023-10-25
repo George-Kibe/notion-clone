@@ -14,7 +14,7 @@ const DocumentsPage = () => {
   // const create = useMutation(api.documents.create);
   
   const onCreate = async () => {
-
+    console.log("Creating a new document")
   }
 
   return (
