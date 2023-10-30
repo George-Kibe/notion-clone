@@ -12,6 +12,7 @@ import { api } from '@/convex/_generated/api'
 import Item  from './item'
 import { toast } from 'sonner'
 import { DocumentList } from './document-list'
+import { TrashBox } from './trash-box'
 
 
 const Navigation = () => {
@@ -143,6 +144,7 @@ const Navigation = () => {
         </div>
         <div className="mt-4">
           <DocumentList />
+          <TrashBox />
         </div>
         <div 
           onMouseDown={handleMouseDown}
