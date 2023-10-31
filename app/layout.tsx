@@ -7,10 +7,6 @@ import { ModalProvider } from "@/components/providers/modal-provider";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 import "./globals.css";
 
-
-
-
-
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
@@ -43,16 +39,19 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className} p-8 `}>
         <ConvexClientProvider>
-          <ThemeProvider 
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-            storageKey="real-notion-theme"
-          >
-            <Toaster position="bottom-center" toastOptions={{ duration: 5000 }}/>
-            {children}
-          </ThemeProvider>  
+          <EdgeStoreProvider>
+            <ThemeProvider 
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+              storageKey="real-notion-theme"
+              >
+              <Toaster position="bottom-center" toastOptions={{ duration: 5000 }}/>
+              <ModalProvider/>
+              {children}
+            </ThemeProvider>  
+          </EdgeStoreProvider>          
         </ConvexClientProvider>      
       </body>
     </html>
