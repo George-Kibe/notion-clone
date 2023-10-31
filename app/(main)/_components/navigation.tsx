@@ -1,28 +1,43 @@
-"use client"
+"use client";
 
-import { cn } from '@/lib/utils'
-import { useMutation, useQuery } from 'convex/react'
-import { ChevronsLeft, MenuIcon, PlusCircle, Search, Settings } from 'lucide-react'
-import { useParams, usePathname, useRouter } from 'next/navigation'
-import React, { ElementRef, useEffect, useRef, useState } from 'react'
-import { useMediaQuery } from 'usehooks-ts'
-import Navbar from './navbar'
-import UserItem from './useritem'
-import { api } from '@/convex/_generated/api'
-import Item  from './item'
-import { toast } from 'sonner'
-import { DocumentList } from './document-list'
-import { TrashBox } from './trash-box'
+import {
+  ChevronsLeft,
+  MenuIcon,
+  Plus,
+  PlusCircle,
+  Search,
+  Settings,
+  Trash
+} from "lucide-react";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { ElementRef, useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "usehooks-ts";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
 
+import { cn } from "@/lib/utils";
+import { api } from "@/convex/_generated/api";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-settings";
 
-const Navigation = () => {
+import { DocumentList } from "./document-list";
+import { TrashBox } from "./trash-box";
+import UserItem from "./useritem";
+import Item from "./item";
+import Navbar from "./navbar";
+
+export const Navigation = () => {
   const router = useRouter();
-  // const settings = useSettings();
-  // const search = useSearch();
+  const settings = useSettings();
+  const search = useSearch();
   const params = useParams();
   const pathname = usePathname();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  // const documents = useQuery(api.documents.get)
   const create = useMutation(api.documents.create);
 
   const isResizingRef = useRef(false);
@@ -60,8 +75,8 @@ const Navigation = () => {
     if (!isResizingRef.current) return;
     let newWidth = event.clientX;
 
-    if (newWidth < 200) newWidth = 200;
-    if (newWidth > 400) newWidth = 400;
+    if (newWidth < 240) newWidth = 240;
+    if (newWidth > 480) newWidth = 480;
 
     if (sidebarRef.current && navbarRef.current) {
       sidebarRef.current.style.width = `${newWidth}px`;
@@ -75,7 +90,7 @@ const Navigation = () => {
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
   };
-  
+
   const resetWidth = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(false);
@@ -93,7 +108,7 @@ const Navigation = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   };
-  
+
   const collapse = () => {
     if (sidebarRef.current && navbarRef.current) {
       setIsCollapsed(true);
@@ -105,20 +120,21 @@ const Navigation = () => {
       setTimeout(() => setIsResetting(false), 300);
     }
   }
-  const handleCreate = async() => {
-    const promise = create({ title: "New Main Test" })
-    //.then((documentId) => router.push(`/documentss/${documentId}`))
 
-  toast.promise(promise, {
-    loading: "Creating a new note...",
-    success: "New note created!",
-    error: "Failed to create a new note."
-  });
-  }
+  const handleCreate = () => {
+    const promise = create({ title: "Untitled" })
+      .then((documentId) => router.push(`/documents/${documentId}`))
+
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created!",
+      error: "Failed to create a new note."
+    });
+  };
 
   return (
     <>
-      <aside 
+      <aside
         ref={sidebarRef}
         className={cn(
           "group/sidebar h-full bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999]",
@@ -126,7 +142,7 @@ const Navigation = () => {
           isMobile && "w-0"
         )}
       >
-         <div
+        <div
           onClick={collapse}
           role="button"
           className={cn(
@@ -138,26 +154,52 @@ const Navigation = () => {
         </div>
         <div>
           <UserItem />
-          <Item onClick={handleCreate} label='Search' icon={Search}/>
-          <Item onClick={handleCreate} label='Settings' icon={Settings}/>
-          <Item onClick={handleCreate} label='New Page' icon={PlusCircle}/>
+          <Item
+            label="Search"
+            icon={Search}
+            isSearch
+            onClick={search.onOpen}
+          />
+          <Item
+            label="Settings"
+            icon={Settings}
+            onClick={settings.onOpen}
+          />
+          <Item
+            onClick={handleCreate}
+            label="New page"
+            icon={PlusCircle}
+          />
         </div>
         <div className="mt-4">
           <DocumentList />
-          <TrashBox />
+          <Item
+            onClick={handleCreate}
+            icon={Plus}
+            label="Add a page"
+          />
+          <Popover>
+            <PopoverTrigger className="w-full mt-4">
+              <Item label="Trash" icon={Trash} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="p-0 w-72"
+              side={isMobile ? "bottom" : "right"}
+            >
+              <TrashBox />
+            </PopoverContent>
+          </Popover>
         </div>
-        <div 
+        <div
           onMouseDown={handleMouseDown}
           onClick={resetWidth}
-          className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute
-          h-full w-1 bg-primary/10 right-0 top-0"
-        >
-        </div>
+          className="opacity-0 group-hover/sidebar:opacity-100 transition cursor-ew-resize absolute h-full w-1 bg-primary/10 right-0 top-0"
+        />
       </aside>
       <div
         ref={navbarRef}
         className={cn(
-          "absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]",
+          "absolute top-0 z-[99999] left-60 ml-8 w-[calc(100%-240px)]",
           isResetting && "transition-all ease-in-out duration-300",
           isMobile && "left-0 w-full"
         )}
@@ -176,5 +218,3 @@ const Navigation = () => {
     </>
   )
 }
-
-export default Navigation
